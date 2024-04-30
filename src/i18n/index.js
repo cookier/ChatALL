@@ -40,6 +40,10 @@ const i18n = createI18n({
   locale: lang,
   fallbackLocale: "en",
   messages,
+  silentTranslationWarn: true, // ignore locale warn message
+  missingWarn: false,
+  silentFallbackWarn: true,
+  fallbackWarn: false,
 });
 
 export default i18n;

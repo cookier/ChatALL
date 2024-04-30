@@ -169,6 +169,7 @@ const favBots = computed(() => {
   if (!props.chat || !props.chat.favBots) {
     return [];
   }
+
   const _favBots = [];
   props.chat.favBots.forEach((favBot) => {
     _favBots.push({

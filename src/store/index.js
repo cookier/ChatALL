@@ -93,6 +93,10 @@ export default createStore({
       inviteToken: "",
       token: "",
     },
+    julianGPT: {
+      authorization: "",
+      pastRounds: 5,
+    },
     wenxinQianfan: {
       apiKey: "",
       secretKey: "",
@@ -236,6 +240,9 @@ export default createStore({
     },
     setKimi(state, tokens) {
       state.kimi = { ...state.kimi, ...tokens };
+    },
+    setJuLianGPT(state, values) {
+      state.julianGPT = { ...state.julianGPT, ...values };
     },
     setWenxinQianfan(state, values) {
       state.wenxinQianfan = { ...state.wenxinQianfan, ...values };

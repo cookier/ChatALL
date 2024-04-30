@@ -103,6 +103,7 @@ const favBots = ref([]);
 const selectedBots = computed(() =>
   favBots.value.filter((bot) => bot.selected),
 );
+console.log(favBots);
 
 function onChangeOpenProp() {
   if (props.open) {

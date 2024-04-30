@@ -91,6 +91,7 @@ export default class KimiBot extends Bot {
         let beginning = "";
         let body = "";
         source.addEventListener("message", (event) => {
+          console.log("kimi:" + event.data);
           const data = JSON.parse(event.data);
 
           if (data.event === "search_plus") {

@@ -10,22 +10,25 @@ class Chats {
 
   static async addFirstChatIfEmpty() {
     const count = await Chats.table.count();
+    console.log("count========" + count);
     if (count === 0) {
       store.commit(
         "selectChat",
         await Chats.add({
           favBots: [
             // default bots
-            { classname: "ChatGPT35Bot", selected: true },
-            { classname: "ChatGPT4Bot", selected: true },
-            { classname: "BingChatCreativeBot", selected: true },
-            { classname: "BingChatBalancedBot", selected: true },
-            { classname: "BingChatPreciseBot", selected: true },
-            { classname: "BardBot", selected: true },
-            { classname: "ClaudeInstantPoeBot", selected: true },
-            { classname: "FalconHC180bBot", selected: true },
-            { classname: "Llama270bBot", selected: true },
-            { classname: "VicunaBot", selected: true },
+            { classname: "KimiBot", selected: true },
+            { classname: "JuLianGPTBot", selected: true },
+            // { classname: "ChatGPT35Bot", selected: true },
+            // { classname: "ChatGPT4Bot", selected: true },
+            // { classname: "BingChatCreativeBot", selected: true },
+            // { classname: "BingChatBalancedBot", selected: true },
+            // { classname: "BingChatPreciseBot", selected: true },
+            // { classname: "BardBot", selected: true },
+            // { classname: "ClaudeInstantPoeBot", selected: true },
+            // { classname: "FalconHC180bBot", selected: true },
+            // { classname: "Llama270bBot", selected: true },
+            // { classname: "VicunaBot", selected: true },
           ],
         }),
       );

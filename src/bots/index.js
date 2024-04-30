@@ -12,6 +12,7 @@ import BingChatCreativeBot from "@/bots/microsoft/BingChatCreativeBot";
 import SageBot from "@/bots/poe/SageBot";
 import SparkBot from "@/bots/SparkBot";
 import BardBot from "@/bots/google/BardBot";
+import JuLianGPTBot from "@/bots/JuLianGPTBot";
 import OpenAIAPI35Bot from "@/bots/openai/OpenAIAPI35Bot";
 import OpenAIAPI4Bot from "@/bots/openai/OpenAIAPI4Bot";
 import OpenAIAPI4128KBot from "@/bots/openai/OpenAIAPI4128KBot";
@@ -125,6 +126,7 @@ const all = [
   Gemma2bItBot.getInstance(),
   Gemma7bItBot.getInstance(),
   AzureOpenAIAPIBot.getInstance(),
+  JuLianGPTBot.getInstance(),
   ChatGPT35Bot.getInstance(),
   ChatGPT35PoeBot.getInstance(),
   OpenAIAPI35Bot.getInstance(),
@@ -206,6 +208,7 @@ export const botTags = {
     bots.getBotByClassName("ChatGLM36bBot"),
     bots.getBotByClassName("ChatGPT35Bot"),
     bots.getBotByClassName("ChatGPT35PoeBot"),
+    bots.getBotByClassName("JuLianGPTBot"),
     bots.getBotByClassName("ClaudeBot"),
     bots.getBotByClassName("ClaudeInstantPoeBot"),
     bots.getBotByClassName("GooglePalm2PoeBot"),

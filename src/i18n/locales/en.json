@@ -259,6 +259,9 @@
   "spark": {
     "name": "iFlytek Spark"
   },
+  "julianGPT": {
+    "name": "聚联GPT"
+  },
   "wenxinQianfan": {
     "name": "Wenxin Qianfan",
     "ERNIE-Bot": "ERNIE-Bot",

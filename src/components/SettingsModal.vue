@@ -63,7 +63,8 @@
                   :settings="settings"
                   brand-id="general"
                   mutation-type="setGeneral"
-                ></CommonBotSettings>
+                >
+                </CommonBotSettings>
               </div>
 
               <div v-if="tab == 'proxy'">
@@ -108,6 +109,7 @@ import SparkBotSettings from "./BotSettings/SparkBotSettings.vue";
 import BardBotSettings from "@/components/BotSettings/BardBotSettings.vue";
 import MistralBotSettings from "@/components/BotSettings/MistralBotSettings.vue";
 import MOSSBotSettings from "@/components/BotSettings/MOSSBotSettings.vue";
+import JuLianGPTBotSettings from "@/components/BotSettings/JuLianGPTBotSettings.vue";
 import WenxinQianfanBotSettings from "@/components/BotSettings/WenxinQianfanBotSettings.vue";
 import GradioAppBotSettings from "@/components/BotSettings/GradioAppBotSettings.vue";
 import Falcon180bBotSettings from "@/components/BotSettings/Falcon180bBotSettings.vue";
@@ -142,6 +144,8 @@ const emit = defineEmits(["update:open", "done"]);
 const tab = ref(null);
 
 const botSettings = [
+  { brand: "julianGPT", component: JuLianGPTBotSettings },
+  { brand: "kimi", component: KimiBotSettings },
   { brand: "360AiBrain", component: Qihoo360AIBrainBotSettings },
   { brand: "azureOpenaiApi", component: AzureOpenAIAPIBotSettings },
   { brand: "bard", component: BardBotSettings },
@@ -157,7 +161,6 @@ const botSettings = [
   { brand: "gradio", component: GradioAppBotSettings },
   { brand: "groqApi", component: GroqAPIBotSettings },
   { brand: "huggingChat", component: HuggingChatBotSettings },
-  { brand: "kimi", component: KimiBotSettings },
   { brand: "lmsys", component: LMSYSBotSettings },
   { brand: "mistral", component: MistralBotSettings },
   { brand: "moss", component: MOSSBotSettings },
