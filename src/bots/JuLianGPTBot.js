@@ -3,7 +3,6 @@ import Bot from "./Bot";
 import axios from "axios";
 import store from "@/store";
 import { SSE } from "sse.js";
-import i18n from "@/i18n";
 
 export default class JuLianGPTBot extends Bot {
   static _brandId = "julianGPT"; // Brand id of the bot, should be unique. Used in i18n.
@@ -29,14 +28,6 @@ export default class JuLianGPTBot extends Bot {
    * @returns {boolean} - true if the bot is available, false otherwise.
    */
   async _checkAvailability() {
-    // Check:
-    // 1. Whether the bot is logged in as needed
-    // 2. Whether the bot settings are correct (e.g. API key is valid)
-    // If yes:
-    //   return true;
-    // else:
-    //   return false;
-
     let available = false;
     try {
       if (store.state.julianGPT.authorization) {
@@ -79,55 +70,26 @@ export default class JuLianGPTBot extends Bot {
       const headers = this.getAuthHeader().headers;
       headers["Content-Type"] = "application/json";
       try {
+        const payload = JSON.stringify({
+          appId: null,
+          options: {
+            groupId: context.chat,
+            model: 3,
+            temperature: 0.8,
+            usingNetwork: false,
+            parentMessageId: context.parentMessageId,
+          },
+          prompt: prompt,
+          systemMessage: "",
+        });
         const source = new SSE(
           `https://chat.julianwl.com/api/chatgpt/chat-process`,
           {
             headers,
-            payload: JSON.stringify({
-              appId: null,
-              options: {
-                groupId: context.chat,
-                model: 3,
-                temperature: 0.8,
-                usingNetwork: false,
-              },
-              prompt: prompt,
-              systemMessage: "",
-            }),
+            payload: payload,
             withCredentials: true,
           },
         );
-        let text = "";
-        source.addEventListener("completion", (event) => {
-          try {
-            console.log("--------------------" + event);
-            const data = JSON.parse(event.data);
-            if (data.completion) {
-              text += data.completion;
-              onUpdateResponse(callbackParam, {
-                content: text,
-                done: false,
-              });
-            }
-          } catch (error) {
-            console.error(event);
-            reject(this.getSSEDisplayError(event));
-          }
-        });
-        source.addEventListener("readystatechange", (event) => {
-          console.log(
-            source.CLOSED + "++++++++++++++++++++++" + JSON.stringify(event),
-          );
-
-          if (event.readyState === source.CLOSED) {
-            // after stream closed, done
-            onUpdateResponse(callbackParam, {
-              content: text,
-              done: true,
-            });
-            resolve();
-          }
-        });
         source.addEventListener("error", (event) => {
           console.error(event);
           reject(this.getSSEDisplayError(event));
@@ -136,33 +98,27 @@ export default class JuLianGPTBot extends Bot {
         let beginning = "";
         let body = "";
         source.addEventListener("message", (event) => {
-          console.log("EVENT=====" + JSON.stringify(event));
-          console.log("DATA=====" + event.data);
-          if (!event.data) {
+          // console.log("EVENT=====" + event.event);
+          // console.log("EVENT JSON=====\n" + event);
+          let chunk = event.source.chunk;
+          console.log("DATA=====" + chunk);
+          if (!chunk) {
             return;
           }
-          const data = JSON.parse(event.data);
-          if (data.event === "search_plus") {
-            if (data.msg?.type == "start_res")
-              beginning += `> ${i18n.global.t("kimi.searching")}\n`;
-            else if (data.msg?.type === "get_res")
-              beginning += `> ${i18n.global.t("kimi.found", { num: data.msg.successNum })}[${data.msg.title}](${data.msg.url})\n`;
-          } else if (data.event === "cmpl") {
-            body += data.text;
-          }
+          var parts = chunk.split(/\n/);
+          var lastPart = parts.pop();
+          console.log("lastPart=====\n" + lastPart);
 
-          if (data.event === "all_done") {
-            onUpdateResponse(callbackParam, {
-              content: `${beginning}\n${body}`,
-              done: true,
-            });
-            resolve();
-          } else {
-            onUpdateResponse(callbackParam, {
-              content: `${beginning}\n${body}`,
-              done: false,
-            });
-          }
+          const data = JSON.parse(lastPart);
+          this.setChatContext({
+            parentMessageId: data.id,
+          });
+          body = data.text;
+          onUpdateResponse(callbackParam, {
+            content: `${beginning}\n${body}`,
+            done: true,
+          });
+          resolve();
         });
         source.stream();
       } catch (err) {
