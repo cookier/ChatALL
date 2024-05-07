@@ -65,7 +65,6 @@ export default class JuLianGPTBot extends Bot {
    */
   async _sendPrompt(prompt, onUpdateResponse, callbackParam) {
     let context = await this.getChatContext();
-
     return new Promise((resolve, reject) => {
       const headers = this.getAuthHeader().headers;
       headers["Content-Type"] = "application/json";
@@ -101,7 +100,6 @@ export default class JuLianGPTBot extends Bot {
           // console.log("EVENT=====" + event.event);
           // console.log("EVENT JSON=====\n" + event);
           let chunk = event.source.chunk;
-          console.log("DATA=====" + chunk);
           if (!chunk) {
             return;
           }
@@ -111,6 +109,7 @@ export default class JuLianGPTBot extends Bot {
 
           const data = JSON.parse(lastPart);
           this.setChatContext({
+            chat: context.chat,
             parentMessageId: data.id,
           });
           body = data.text;
